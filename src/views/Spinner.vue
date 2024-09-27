@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from 'vue';
-import { FortuneWheel, type Data } from 'vue3-fortune-wheel';
+import { FortuneWheel, type Data, type ImgParams } from 'vue3-fortune-wheel';
 
 type Role = "DPS" | "TANK" | "HEALER" | "SUPPORT";
 interface Spec {
