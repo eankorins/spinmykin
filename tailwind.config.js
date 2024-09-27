@@ -23,7 +23,7 @@ module.exports = {
                 },
                 'hunter': {
 
-                    100: '#a330c9',
+                    100: '#aad372',
                 },
                 'mage': {
 

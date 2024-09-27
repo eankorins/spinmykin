@@ -263,14 +263,14 @@ const doSpin = async function (start: number, interval: number, max: number) {
     highlighted.value = getRandom();
     console.log("Selected", highlighted);
     if (Date.now() - start < max) {
-        setTimeout(() => { doSpin(start, interval + 50, max) }, interval);
+        setTimeout(() => { doSpin(start, interval + 20, max) }, interval);
     } else {
         spinning.value = false;
     }
 }
 
 const spin = async function () {
-    let nextInterval = 100;
+    let nextInterval = 50;
     let maxTime = 5000;
     let start = Date.now();
     spinning.value = true;
