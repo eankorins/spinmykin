@@ -312,6 +312,9 @@ const doSpin = async function (start: number, interval: number, max: number) {
     }
 }
 
+
+
+
 const toggleSpec = (s, idx) => {
     console.log(s);
     s.selected = !s.selected;
