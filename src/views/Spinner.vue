@@ -7,7 +7,9 @@ id: number,
     wowClass: string,
     color: string
     name: string,
-    selected:true, role: Role,
+    selected:boolean,
+    role: Role,
+
 }
 
 const specs = ref<Spec[]>([
@@ -21,7 +23,7 @@ const specs = ref<Spec[]>([
     {
         id: 2,
         name: "Vengence",
-        selected: false, role: "TANK",
+        selected:true, role: "TANK",
         wowClass: "Demon Hunter",
         color: "bg-dh-100",
     },
@@ -30,14 +32,14 @@ const specs = ref<Spec[]>([
         wowClass: "Death Knight",
         color: "bg-dk-100",
         name: "Frost",
-        selected: true, role: "DPS"
+        selected:true, role: "DPS"
     },
     {
         id: 4,
         wowClass: "Death Knight",
         color: "bg-dk-100",
         name: "Unholy",
-        selected: true, role: "DPS"
+        selected:true, role: "DPS"
     },
     {
         id: 5,
@@ -311,9 +313,6 @@ const doSpin = async function (start: number, interval: number, max: number) {
         spinning.value = false;
     }
 }
-
-
-
 
 const toggleSpec = (s, idx) => {
     console.log(s);
