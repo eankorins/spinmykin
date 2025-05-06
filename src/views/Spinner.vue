@@ -296,6 +296,7 @@ const getRandom = function () {
     return idx;
 }
 const spinning = ref(false);
+const winnerHistory = ref<Spec[]>([]);
 const winner = computed(() => {
     return specs.value.find(s => s.id == highlighted.value);
 });
@@ -309,6 +310,7 @@ const doSpin = async function (start: number, interval: number, max: number) {
     if (Date.now() - start < max) {
         setTimeout(() => { doSpin(start, interval + 20, max) }, interval);
     } else {
+        winnerHistory.value.push(winner.value);
         spinning.value = false;
     }
 }
@@ -350,6 +352,13 @@ const spin = async function () {
                     Spin
                 </button>
             </div>
+                <div class="flex flex-col gap-2 items-center w-[500px]">
+                    <div v-for="(s, idx) in winnerHistory" :key="s.name"
+                        :class="[s.color, s.selected ? '' : 'opacity-40', highlighted == s.id ? 'highlighted' : '']"
+                        class="w-36 h-12 cursor-pointer" v-on:click="toggleSpec(s, idx)">
+                        <div class="p-2">{{ s.name }}</div>
+                    </div>
+                </div>
         </div>
     </main>
 </template>
