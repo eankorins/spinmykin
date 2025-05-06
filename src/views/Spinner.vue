@@ -3,13 +3,12 @@ import { computed, ref } from 'vue';
 
 type Role = "DPS" | "TANK" | "HEALER" | "SUPPORT";
 interface Spec {
-id: number,
+    id: number,
     wowClass: string,
     color: string
     name: string,
     selected:boolean,
     role: Role,
-
 }
 
 const specs = ref<Spec[]>([
@@ -298,7 +297,7 @@ const getRandom = function () {
 }
 const spinning = ref(false);
 const winner = computed(() => {
-    return specs[highlighted.value];
+    return specs.value.find(s => s.id == highlighted.value);
 });
 
 const selectedSpecs = computed(() => {
@@ -314,8 +313,7 @@ const doSpin = async function (start: number, interval: number, max: number) {
     }
 }
 
-const toggleSpec = (s, idx) => {
-    console.log(s);
+const toggleSpec = (s:Spec, idx: number) => {
     s.selected = !s.selected;
 }
 
