@@ -44,7 +44,7 @@ const specs = ref<Spec[]>([
         id: 5,
         wowClass: "Death Knight",
         color: "bg-dk-100",
-        name: "Vengence",
+        name: "Blood",
         selected:true, role: "TANK"
     },
     {
@@ -304,14 +304,20 @@ const winner = computed(() => {
 const selectedSpecs = computed(() => {
     return specs.value.filter(s => s.selected);    
 })
-const doSpin = async function (start: number, interval: number, max: number) {
+const doSpin = function (start: number, interval: number, max: number, toLast: boolean) {
     highlighted.value = selectedSpecs.value[getRandom()].id;
     console.log("Selected", highlighted);
     if (Date.now() - start < max) {
-        setTimeout(() => { doSpin(start, interval + 20, max) }, interval);
+        setTimeout(() => { doSpin(start, interval + 10, max, toLast) }, interval);
     } else {
-        winnerHistory.value.push(winner.value);
+        if(winner.value){
+            winnerHistory.value.push(winner.value);
+            winner.value.selected = false;
+        }
         spinning.value = false;
+        if(toLast && selectedSpecs.value.length > 1){
+            spin(toLast);
+        }
     }
 }
 
@@ -319,20 +325,20 @@ const toggleSpec = (s:Spec, idx: number) => {
     s.selected = !s.selected;
 }
 
-const spin = async function () {
+const spin = function (toLast: boolean) {
     let nextInterval = 50;
-    let maxTime = 5000;
+    let maxTime = toLast ? 3000 : 5000 ;
     let start = Date.now();
     spinning.value = true;
-    doSpin(start, nextInterval, maxTime);
+    doSpin(start, nextInterval, maxTime, toLast);
 }
 
 </script>
 
 <template>
     <main>
-        <div class="w-[100vw] h-[100vh] bg-slate-900 flex justify-center pt-20">
-            <div class="h-full">
+        <div class="w-[100vw] h-[100vh] bg-slate-900 flex flex-col justify-center p-24">
+            <div class="h-[900px] flex">
                 <div class="flex flex-wrap gap-2 items-center w-[500px]">
                     <div v-for="(s, idx) in specs" :key="s.name"
                         :class="[s.color, s.selected ? '' : 'opacity-40', highlighted == s.id ? 'highlighted' : '']"
@@ -340,21 +346,25 @@ const spin = async function () {
                         <div class="p-2">{{ s.name }}</div>
                     </div>
                 </div>
-            </div>
-            <div class="self-center flex flex-col">
-                <div class="flex flex-col gap-2 ">
-                    <div v-for="(s, idx) in winnerHistory" :key="s.name"
-                        :class="[s.color, s.selected ? '' : 'opacity-40', highlighted == s.id ? 'highlighted' : '']"
-                        class="w-36 h-12 cursor-pointer" v-on:click="toggleSpec(s, idx)">
-                        <div class="p-2">{{ s.name }}</div>
+                <div class="flex flex-col">
+                    <div class="flex flex-wrap gap-2 items-center w-[500px]">
+                        <div v-for="(s, idx) in winnerHistory" :key="s.name"
+                            :class="[s.color]"
+                            class="w-36 h-12 cursor-pointer" v-on:click="toggleSpec(s, idx)">
+                            <div class="p-2">{{ s.name }}</div>
+                        </div>
                     </div>
                 </div>
-                <div class="max-w-16">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="spin()"
-                        v-if="!spinning">
-                        Spin
-                    </button>
-                </div>
+            </div>
+            <div class="flex gap-2">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="spin(false)"
+                    v-if="!spinning">
+                    Spin
+                </button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="spin(true)"
+                    v-if="!spinning">
+                    Spin To Last Spec Standing
+                </button>
             </div>
         </div>
     </main>
