@@ -341,24 +341,21 @@ const spin = async function () {
                     </div>
                 </div>
             </div>
-            <div class="self-center">
-                <div class="w-36 h-12" v-if="highlighted > -1">
-                    <div :class="winner.color" class="w-36 h-12" v-if="winner">
-                        <div class="p-2">{{ winner.name }}</div>
-                    </div>
-                </div>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="spin()"
-                    v-if="!spinning">
-                    Spin
-                </button>
-            </div>
-                <div class="flex flex-col gap-2 items-center w-[500px]">
+            <div class="self-center flex flex-col">
+                <div class="flex flex-col gap-2 ">
                     <div v-for="(s, idx) in winnerHistory" :key="s.name"
                         :class="[s.color, s.selected ? '' : 'opacity-40', highlighted == s.id ? 'highlighted' : '']"
                         class="w-36 h-12 cursor-pointer" v-on:click="toggleSpec(s, idx)">
                         <div class="p-2">{{ s.name }}</div>
                     </div>
                 </div>
+                <div class="max-w-16">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="spin()"
+                        v-if="!spinning">
+                        Spin
+                    </button>
+                </div>
+            </div>
         </div>
     </main>
 </template>
